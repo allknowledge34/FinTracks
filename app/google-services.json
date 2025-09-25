@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "610596201338",
+    "firebase_url": "https://fintrack-c25c3-default-rtdb.firebaseio.com",
+    "project_id": "fintrack-c25c3",
+    "storage_bucket": "fintrack-c25c3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610596201338:android:ed7554c26a076d851b2cc3",
+        "android_client_info": {
+          "package_name": "com.sachin.fintrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpvoIH-RoU0duk6tyQ3_7SVk40oOkjAAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

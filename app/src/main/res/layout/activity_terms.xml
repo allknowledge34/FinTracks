@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.activites.TermsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbOrderDetailFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_chevron"
+        app:title="Terms and Conditions "
+        app:titleTextColor="@color/black"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbOrderDetailFragment">
+
+        <TextView
+            android:id="@+id/termsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:text="Terms and Conditions for FinTrack**
+
+Last updated: 27 September 2025
+
+Welcome to FinTrack. By accessing or using our app/website, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully before using the app.
+
+1. Accounts
+- Users can create accounts to access features of FinTrack.
+- You are responsible for keeping your account information secure and for all activities under your account.
+- Please provide accurate information during registration.
+
+2. User Content
+- Users can upload content such as text and images.
+- By submitting content, you grant FinTrack a non-exclusive, worldwide, royalty-free license to use, display, and distribute your content within the app.
+- Users must not upload illegal, offensive, or infringing content.
+
+3. Promotions and Contests
+- FinTrack may offer promotions, contests, or sweepstakes in the future.
+- Participation may require agreeing to additional rules or eligibility criteria.
+
+4. Intellectual Property
+- All app content, trademarks, logos, and designs are the exclusive property of FinTrack.
+- No content from FinTrack may be copied, modified, or distributed without prior written permission.
+
+5. Feedback
+- Any feedback, suggestions, or ideas provided by users may be used by FinTrack without compensation or credit.
+
+6. Prohibited Uses
+Users may not:
+- Upload illegal, harmful, or offensive content.
+- Attempt to hack or disrupt the app.
+- Use the app for unauthorized commercial purposes.
+
+7. Dispute Resolution
+- Any disputes arising from these Terms will be resolved according to applicable law.
+
+8. Indemnification
+- You agree to indemnify and hold FinTrack harmless from any claims, damages, or expenses arising from your use of the app or violation of these Terms.
+
+9. Severability
+- If any part of these Terms is found invalid or unenforceable, the remaining provisions will remain in effect.
+
+10. Contact Information
+- For questions regarding these Terms or copyright complaints:
+Email: allknowledge34@gmail.com
+
+11. Updates to Terms
+- FinTrack may update these Terms occasionally.
+- Updates will be reflected by modifying the “Last Updated” date and may also be posted via in-app notifications.
+- Continued use of the app constitutes acceptance of the updated Terms.
+
+Key Notes:
+- Accounts and content uploads: Enabled
+- In-app purchases, goods/services, subscriptions: Not offered
+- Promotions/contests: May occur in the future"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

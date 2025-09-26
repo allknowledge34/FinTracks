@@ -31,6 +31,7 @@ import com.sachin.fintrack.R;
 import com.sachin.fintrack.databinding.FragmentProfileBinding;
 import com.sachin.fintrack.models.UserModel;
 import com.sachin.fintrack.views.activites.LoginActivity;
+import com.sachin.fintrack.views.activites.TermsActivity;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
@@ -68,7 +69,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.pinkesh.site/")));
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.termsfeed.com/live/7fe235d0-aa19-4642-9cb1-33a35370530e")));
             }
         });
 
@@ -76,7 +77,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.pinkesh.site/")));
+                Intent intent = new Intent(getContext(), TermsActivity.class);
+                startActivity(intent);
             }
         });
 

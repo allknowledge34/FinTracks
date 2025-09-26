@@ -2,19 +2,12 @@ package com.sachin.fintrack.views.activites;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.navigation.NavigationBarView;
 import com.sachin.fintrack.R;
 import com.sachin.fintrack.databinding.ActivityMainBinding;
 import com.sachin.fintrack.utils.Constants;
@@ -25,20 +18,12 @@ import com.sachin.fintrack.views.fragments.TransactionsFragment;
 
 import java.util.Calendar;
 
+import nl.joery.animatedbottombar.AnimatedBottomBar;
+
 public class MainActivity extends AppCompatActivity {
 
-    ActivityMainBinding binding;
-
-    Calendar calendar;
-    /*
-    0 = Daily
-    1 = Monthly
-    2 = Calendar
-    3 = Summary
-    4 = Notes
-     */
-
-
+    private ActivityMainBinding binding;
+    private Calendar calendar;
     public MainViewModel viewModel;
 
     @Override
@@ -49,40 +34,51 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-
         Constants.setCategories();
-
         calendar = Calendar.getInstance();
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, new TransactionsFragment());
-        transaction.commit();
-
-        binding.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        loadFragment(new TransactionsFragment());
+        binding.bottomBar.setOnTabSelectListener(new AnimatedBottomBar.OnTabSelectListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                if(item.getItemId() == R.id.transactions) {
-                    getSupportFragmentManager().popBackStack();
-                } else if(item.getItemId() == R.id.stats){
-                    transaction.replace(R.id.content, new StatsFragment());
-                    transaction.addToBackStack(null);
-                }else if(item.getItemId() == R.id.accounts){
-                    transaction.replace(R.id.content, new ProfileFragment());
-                    transaction.addToBackStack(null);
-                }else if(item.getItemId() == R.id.more){
-                    String shareBody = "Hey, I am Using Best Earning App";
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_TEXT,shareBody);
-                    startActivity(intent);
+            public void onTabSelected(int lastIndex, AnimatedBottomBar.Tab lastTab, int newIndex, AnimatedBottomBar.Tab newTab) {
+                Fragment selectedFragment = null;
+
+                switch (newIndex) {
+                    case 0:
+                        selectedFragment = new TransactionsFragment();
+                        break;
+                    case 1:
+                        selectedFragment = new StatsFragment();
+                        break;
+                    case 2:
+                        selectedFragment = new ProfileFragment();
+                        break;
+                    case 3:
+                        String shareBody = "Hey, I am Using Best Earning App";
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+                        startActivity(Intent.createChooser(intent, "Share via"));
+                        break;
                 }
-                transaction.commit();
-                return true;
+
+                if (selectedFragment != null) {
+                    loadFragment(selectedFragment);
+                }
+            }
+
+            @Override
+            public void onTabReselected(int index, AnimatedBottomBar.Tab tab) {
+
             }
         });
 
 
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content, fragment);
+        transaction.commit();
     }
 
     public void getTransactions() {

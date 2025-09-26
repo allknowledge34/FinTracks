@@ -25,15 +25,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="#F0EFEF">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="51dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                android:background="@drawable/top_background">
 
                 <View
                     android:id="@+id/fetchImage"
@@ -48,12 +40,11 @@
                     android:id="@+id/profile_image"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginBottom="4dp"
                     android:src="@drawable/account"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView5"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView5" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

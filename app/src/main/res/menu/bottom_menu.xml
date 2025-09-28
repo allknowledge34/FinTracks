@@ -13,12 +13,13 @@
         android:title="Status"/>
 
     <item
+        android:id="@+id/chatbot"
+        android:icon="@drawable/btn_2"
+        android:title="Chatbot"/>
+
+    <item
         android:id="@+id/accounts"
         android:icon="@drawable/bottom_btn4"
         android:title="Profile"/>
 
-    <item
-        android:id="@+id/more"
-        android:icon="@drawable/ic_more"
-        android:title="Share"/>
 </menu>

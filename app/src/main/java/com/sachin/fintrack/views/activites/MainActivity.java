@@ -12,6 +12,7 @@ import com.sachin.fintrack.R;
 import com.sachin.fintrack.databinding.ActivityMainBinding;
 import com.sachin.fintrack.utils.Constants;
 import com.sachin.fintrack.viewmodels.MainViewModel;
+import com.sachin.fintrack.views.fragments.ChatbotFragment;
 import com.sachin.fintrack.views.fragments.ProfileFragment;
 import com.sachin.fintrack.views.fragments.StatsFragment;
 import com.sachin.fintrack.views.fragments.TransactionsFragment;
@@ -50,14 +51,10 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = new StatsFragment();
                         break;
                     case 2:
-                        selectedFragment = new ProfileFragment();
+                        selectedFragment = new ChatbotFragment();
                         break;
                     case 3:
-                        String shareBody = "Hey, I am Using Best Earning App";
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setType("text/plain");
-                        intent.putExtra(Intent.EXTRA_TEXT, shareBody);
-                        startActivity(Intent.createChooser(intent, "Share via"));
+                        selectedFragment = new ProfileFragment();
                         break;
                 }
 

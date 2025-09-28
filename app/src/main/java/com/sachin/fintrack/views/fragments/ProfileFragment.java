@@ -3,16 +3,13 @@ package com.sachin.fintrack.views.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Toast;
 
 import com.google.firebase.database.annotations.Nullable;
@@ -27,11 +24,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.sachin.fintrack.R;
 import com.sachin.fintrack.databinding.FragmentProfileBinding;
 import com.sachin.fintrack.models.UserModel;
 import com.sachin.fintrack.views.activites.LoginActivity;
-import com.sachin.fintrack.views.activites.TermsActivity;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
@@ -77,8 +72,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getContext(), TermsActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://allknowledge34.github.io/Terms-Conditions/")));
             }
         });
 

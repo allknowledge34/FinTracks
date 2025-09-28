@@ -61,5 +61,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:24.2.0")
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.3.4")
     implementation("nl.joery.animatedbottombar:library:1.1.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
 }

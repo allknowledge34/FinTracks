@@ -2,9 +2,12 @@ package com.sachin.fintrack.views.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.Manifest;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -37,6 +40,9 @@ public class ProfileFragment extends Fragment {
     FirebaseStorage storage;
     Uri profileUri;
     ProgressDialog progressDialog;
+
+    private static final int STORAGE_PERMISSION_CODE = 100;
+    private static final int IMAGE_PICK_CODE = 2;
 
     public ProfileFragment(){
 
@@ -95,11 +101,12 @@ public class ProfileFragment extends Fragment {
         binding.fetchImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent,2);
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                } else {
+                    openGallery();
+                }
             }
         });
 
@@ -128,6 +135,13 @@ public class ProfileFragment extends Fragment {
 
         loadUserData();
         return binding.getRoot();
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
     }
 
     private void loadUserData() {

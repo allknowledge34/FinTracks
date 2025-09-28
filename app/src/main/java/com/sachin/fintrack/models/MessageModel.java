@@ -2,8 +2,8 @@ package com.sachin.fintrack.models;
 
 public class MessageModel {
 
-    static String SENT_BY_ME = "me";
-    static String SENT_BY_BOT = "bot";
+    public static final String SENT_BY_ME = "me";
+    public static final String SENT_BY_BOT = "bot";
 
     String message;
     String sentBy;

@@ -59,10 +59,10 @@
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/pro" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/pro"
         android:layout_width="420dp"
         android:layout_height="320dp"
         android:foregroundGravity="center"

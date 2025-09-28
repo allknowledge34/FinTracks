@@ -25,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/send_message_back"
+                android:backgroundTint="@color/category4"
                 android:padding="10dp"
                 android:text="How can I assist you today?" />
         </LinearLayout>

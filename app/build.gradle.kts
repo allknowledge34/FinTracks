@@ -62,5 +62,8 @@ dependencies {
     implementation("com.github.ismaeldivita:chip-navigation-bar:1.3.4")
     implementation("nl.joery.animatedbottombar:library:1.1.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation ("com.google.ai.client.generativeai:generativeai:0.6.0")
+    implementation ("com.google.guava:guava:31.0.1-android")
+    implementation ("org.reactivestreams:reactive-streams:1.0.4")
 
 }

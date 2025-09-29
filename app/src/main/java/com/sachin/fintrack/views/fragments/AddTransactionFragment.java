@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.sachin.fintrack.AdmobAds.Admob;
@@ -140,13 +141,23 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
             accountsDialog.show();
         });
 
-        binding.saveTransactionBtn.setOnClickListener(c-> {
-            double amount = Double.parseDouble(binding.amount.getText().toString());
-            String note = binding.note.getText().toString();
+        binding.saveTransactionBtn.setOnClickListener(c -> {
+            String amountStr = binding.amount.getText().toString().trim();
+            if (amountStr.isEmpty()) {
+                Toast.makeText(getContext(), "Please select Income or Expense", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            if (transaction.getType().equals(Constants.EXPENSE)){
-                transaction.setAmount(amount*-1);
-            }else {
+            double amount = Double.parseDouble(amountStr);
+            String note = binding.note.getText().toString().trim();
+            if (transaction.getType() == null) {
+                Toast.makeText(getContext(), "Please select Income or Expense", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (transaction.getType().equals(Constants.EXPENSE)) {
+                transaction.setAmount(amount * -1);
+            } else {
                 transaction.setAmount(amount);
             }
 
@@ -158,6 +169,7 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
             ((MainActivity)getActivity()).getTransactions();
             dismiss();
         });
+
         return binding.getRoot();
     }
 }

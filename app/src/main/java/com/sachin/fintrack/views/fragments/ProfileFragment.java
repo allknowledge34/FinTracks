@@ -4,9 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.Manifest;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -29,7 +32,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.sachin.fintrack.databinding.FragmentProfileBinding;
 import com.sachin.fintrack.models.UserModel;
+import com.sachin.fintrack.views.activites.ContactActivity;
 import com.sachin.fintrack.views.activites.LoginActivity;
+import com.sachin.fintrack.views.activites.NewUpdateActivity;
 import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
@@ -41,8 +46,8 @@ public class ProfileFragment extends Fragment {
     Uri profileUri;
     ProgressDialog progressDialog;
 
-    private static final int STORAGE_PERMISSION_CODE = 100;
-    private static final int IMAGE_PICK_CODE = 2;
+    private ActivityResultLauncher<String> pickImageLauncher;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
 
     public ProfileFragment(){
 
@@ -51,6 +56,28 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        pickImageLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    if (uri != null) {
+                        profileUri = uri;
+                        binding.profileImage.setImageURI(profileUri);
+                        updateProfile(profileUri);
+                    }
+                }
+        );
+
+        requestPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        openGallery();
+                    } else {
+                        Toast.makeText(getContext(), "Permission Denied!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
 
     @Override
@@ -86,7 +113,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.pinkesh.site/")));
+                Intent intent = new Intent(getContext(), NewUpdateActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -94,21 +122,12 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.pinkesh.site/")));
+                Intent intent = new Intent(getContext(), ContactActivity.class);
+                startActivity(intent);
             }
         });
 
-        binding.fetchImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                } else {
-                    openGallery();
-                }
-            }
-        });
+        binding.fetchImage.setOnClickListener(v -> checkPermissionAndOpenGallery());
 
         binding.share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,26 +141,45 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        binding.logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                auth.signOut();
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
+        binding.logout.setOnClickListener(v -> {
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Logout")
+                    .setMessage("Are you sure you want to logout?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        auth.signOut();
+                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("No", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
+
 
         loadUserData();
         return binding.getRoot();
     }
 
+    private void checkPermissionAndOpenGallery() {
+        String permission;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permission = Manifest.permission.READ_MEDIA_IMAGES;
+        } else {
+            permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        }
+
+        if (ContextCompat.checkSelfPermission(requireContext(), permission)
+                == PackageManager.PERMISSION_GRANTED) {
+            openGallery();
+        } else {
+            requestPermissionLauncher.launch(permission);
+        }
+    }
+
     private void openGallery() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_CODE);
+        pickImageLauncher.launch("image/*");
     }
 
     private void loadUserData() {

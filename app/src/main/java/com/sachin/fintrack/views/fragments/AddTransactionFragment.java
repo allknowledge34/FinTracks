@@ -122,8 +122,17 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
             ArrayList<Account> accounts = new ArrayList<>();
             accounts.add(new Account(0, "Cash"));
             accounts.add(new Account(0, "Bank"));
-            accounts.add(new Account(0, "PayTm"));
+            accounts.add(new Account(0, "Credit Card"));
+            accounts.add(new Account(0, "Digital Wallet"));
+            accounts.add(new Account(0, "UPI"));
             accounts.add(new Account(0, "EasyPaisa"));
+            accounts.add(new Account(0, "BNPL"));
+            accounts.add(new Account(0, "Gift Card"));
+            accounts.add(new Account(0, "Loan"));
+            accounts.add(new Account(0, "Employer Reimbursement"));
+            accounts.add(new Account(0, "Asset"));
+            accounts.add(new Account(0, "Cash on Delivery"));
+            accounts.add(new Account(0, "Crypto Wallet"));
             accounts.add(new Account(0, "Other"));
 
             AccountsAdapter adapter = new AccountsAdapter(getContext(), accounts, new AccountsAdapter.AccountClickListener() {

@@ -133,11 +133,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String shareBody = "Hey, I am Using Best Earning App";
+                String shareLink = "https://www.pinkesh.site/projects/FinTrack";
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT,shareBody);
-                startActivity(intent);
+                intent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this amazing app: " + shareLink);
+                startActivity(Intent.createChooser(intent, "Share via"));
             }
         });
 

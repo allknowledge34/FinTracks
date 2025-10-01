@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
@@ -92,6 +93,12 @@ public class TransactionsFragment extends Fragment {
                 } else if ("Daily".contentEquals(tab.getText())) {
                     Constants.SELECTED_TAB = Constants.DAILY;
                     updateDate();
+                } else if ("Calendar".contentEquals(tab.getText())) {
+                    Toast.makeText(getContext(), "coming soon", Toast.LENGTH_SHORT).show();
+                } else if ("Summary".contentEquals(tab.getText())) {
+                    Toast.makeText(getContext(), "coming soon", Toast.LENGTH_SHORT).show();
+                } else if ("Notes".contentEquals(tab.getText())) {
+                    Toast.makeText(getContext(), "coming soon", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -58,6 +58,13 @@ public class ChatbotFragment extends Fragment {
 
         binding.ch.setVisibility(View.VISIBLE);
 
+        binding.voice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "coming soon", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         sendBtn.setOnClickListener(v -> {
             String query = messageEt.getText().toString().trim();
             if (!query.isEmpty()) {

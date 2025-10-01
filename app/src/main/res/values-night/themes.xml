@@ -4,4 +4,6 @@
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/dWhite</item> -->
     </style>
+
+    <style name="Theme.FinTrack" parent="Base.Theme.FinTrack" />
 </resources>

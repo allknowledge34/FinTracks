@@ -25,6 +25,21 @@ public class ContactActivity extends AppCompatActivity {
 
         setStatusBarColor();
         binding.back.setOnClickListener(v -> finish());
+
+        binding.Genernal.setOnClickListener(v -> {
+            Uri uri = Uri.parse("smsto:9304519076");
+            Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+            intent.putExtra("sms_body", "the SMS text");
+            startActivity(intent);
+        });
+
+        binding.feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.pinkesh.site/projects/FinTrack")));
+            }
+        });
+
         binding.contact.setOnClickListener(v -> {
             Uri uri = Uri.parse("smsto:9304519076");
             Intent intent = new Intent(Intent.ACTION_SENDTO, uri);

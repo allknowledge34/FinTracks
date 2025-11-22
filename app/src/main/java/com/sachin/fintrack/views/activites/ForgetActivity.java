@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.sachin.fintrack.AdmobAds.Admob;
 import com.sachin.fintrack.R;
 import com.sachin.fintrack.databinding.ActivityForgetBinding;
 
@@ -34,6 +35,8 @@ public class ForgetActivity extends AppCompatActivity {
         );
         binding = ActivityForgetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Admob.loadBannerAd(binding.bannerAd, ForgetActivity.this);
 
         auth = FirebaseAuth.getInstance();
 

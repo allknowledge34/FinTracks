@@ -172,8 +172,6 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
 
             transaction.setNote(note);
 
-            Admob.showInterstitial(requireActivity(), true);
-
             ((MainActivity)getActivity()).viewModel.addTransaction(transaction);
             ((MainActivity)getActivity()).getTransactions();
             dismiss();

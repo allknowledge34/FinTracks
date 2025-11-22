@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.sachin.fintrack.AdmobAds.Admob;
 import com.sachin.fintrack.R;
 import com.sachin.fintrack.databinding.ActivityOtpactivityBinding;
 import com.sachin.fintrack.models.UserModel;
@@ -46,6 +47,8 @@ public class OTPActivity extends AppCompatActivity {
 
         binding = ActivityOtpactivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Admob.loadBannerAd(binding.bannerAd, OTPActivity.this);
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();

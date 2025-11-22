@@ -111,6 +111,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        binding.relRateus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.indusappstore.com/apps/finance/fintrack/com.sachin.fintrack?page=details&id=com.sachin.fintrack")));
+            }
+        });
+
         binding.newTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -27,7 +27,5 @@ public class LanguageActivity extends AppCompatActivity {
         binding = ActivityLanguageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Admob.loadBannerAd(binding.bannerAd, LanguageActivity.this);
-
     }
 }

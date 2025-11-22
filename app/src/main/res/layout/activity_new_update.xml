@@ -47,7 +47,8 @@
         android:background="#F3F4F8"
         android:layout_below="@+id/rel_top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="NotSibling">
 
 
         <RelativeLayout
@@ -73,7 +74,7 @@
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/adContainer"
+            android:id="@+id/constrain_adview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#E1E7ED"

@@ -12,8 +12,8 @@ android {
         applicationId = "com.sachin.fintrack"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,5 +65,6 @@ dependencies {
     implementation ("com.google.ai.client.generativeai:generativeai:0.6.0")
     implementation ("com.google.guava:guava:31.0.1-android")
     implementation ("org.reactivestreams:reactive-streams:1.0.4")
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
 
 }

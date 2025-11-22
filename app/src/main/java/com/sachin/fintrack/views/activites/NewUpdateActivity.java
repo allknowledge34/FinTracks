@@ -1,15 +1,12 @@
 package com.sachin.fintrack.views.activites;
 
+
 import android.os.Bundle;
 import android.view.View;
-
-import androidx.activity.EdgeToEdge;
+import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.sachin.fintrack.R;
+import com.sachin.fintrack.AdmobAds.Admob;
 import com.sachin.fintrack.databinding.ActivityNewUpdateBinding;
 
 public class NewUpdateActivity extends AppCompatActivity {
@@ -18,14 +15,19 @@ public class NewUpdateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
         binding = ActivityNewUpdateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.back.setOnClickListener(new View.OnClickListener() {
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
     }
 }

@@ -178,7 +178,6 @@ public class TransactionsFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         UserModel model = documentSnapshot.toObject(UserModel.class);
                         if (documentSnapshot.exists() && model != null) {
-                            binding.userName.setText(model.getName() != null ? model.getName() : "Guest");
 
                             Picasso.get()
                                     .load(model.getProfile())

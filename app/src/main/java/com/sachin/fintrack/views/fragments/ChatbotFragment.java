@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,8 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sachin.fintrack.GeminiResp;
-import com.sachin.fintrack.R;
+import com.sachin.fintrack.utils.GeminiResp;
 import com.sachin.fintrack.adapters.MessageAdapter;
 import com.sachin.fintrack.databinding.FragmentChatbotBinding;
 import com.sachin.fintrack.models.MessageModel;
@@ -56,9 +56,21 @@ public class ChatbotFragment extends Fragment {
         GeminiResp geminiResp = new GeminiResp();
         chatModel = geminiResp.getModel().startChat();
 
-        binding.ch.setVisibility(View.VISIBLE);
+        binding.mic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "coming soon", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        binding.voice.setOnClickListener(new View.OnClickListener() {
+        binding.btnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "coming soon", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.file.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "coming soon", Toast.LENGTH_SHORT).show();
@@ -70,8 +82,6 @@ public class ChatbotFragment extends Fragment {
             if (!query.isEmpty()) {
                 addToChat(query, MessageModel.SENT_BY_ME);
                 messageEt.setText("");
-
-                binding.ch.setVisibility(View.GONE);
 
 
                 GeminiResp.getResponse(chatModel, query, new ResponseCallback() {
@@ -100,6 +110,16 @@ public class ChatbotFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        requireActivity().getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
     }
 
     private void addToChat(String message, String sentBy) {

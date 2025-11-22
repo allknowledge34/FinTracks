@@ -1,4 +1,4 @@
-package com.sachin.fintrack;
+package com.sachin.fintrack.utils;
 
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.ChatFutures;
@@ -12,13 +12,9 @@ import com.google.ai.client.generativeai.type.SafetySetting;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.sachin.fintrack.utils.BuildConfig;
-import com.sachin.fintrack.utils.ResponseCallback;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
 
 public class GeminiResp {
 

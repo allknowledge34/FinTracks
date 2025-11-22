@@ -15,7 +15,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/imageView5"
             app:layout_constraintTop_toTopOf="@+id/imageView5">
@@ -25,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/send_message_back"
-                android:backgroundTint="@color/category4"
                 android:padding="10dp"
                 android:text="How can I assist you today?" />
         </LinearLayout>
@@ -38,7 +40,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ai" />
+            app:srcCompat="@drawable/img" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -52,10 +54,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/pro"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/pro">
 
             <TextView
@@ -63,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/send_message_back"
+                android:backgroundTint="#EFF6F5"
                 android:padding="10dp"
                 android:text="How can I assist you today?" />
         </LinearLayout>
@@ -75,7 +82,7 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/account" />
+            app:srcCompat="@drawable/img" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

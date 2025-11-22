@@ -10,19 +10,23 @@ import android.Manifest;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.google.firebase.database.annotations.Nullable;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.sachin.fintrack.AdmobAds.Admob;
 import com.sachin.fintrack.R;
 
 
@@ -32,7 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.sachin.fintrack.databinding.FragmentProfileBinding;
 import com.sachin.fintrack.models.UserModel;
-import com.sachin.fintrack.views.activites.ContactActivity;
+import com.sachin.fintrack.views.activites.LanguageActivity;
 import com.sachin.fintrack.views.activites.LoginActivity;
 import com.sachin.fintrack.views.activites.NewUpdateActivity;
 import com.squareup.picasso.Picasso;
@@ -91,8 +95,6 @@ public class ProfileFragment extends Fragment {
         progressDialog.setTitle("Profile Uploading");
         progressDialog.setMessage("We Are Uploading Your Profile");
 
-        Admob.loadBannerAd(binding.bannerAd, getActivity());
-
         binding.privacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,11 +120,12 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        binding.contact.setOnClickListener(new View.OnClickListener() {
+        binding.relLang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(getContext(), ContactActivity.class);
+                Toast.makeText(requireContext(), "Coming Soon", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), LanguageActivity.class);
                 startActivity(intent);
             }
         });
@@ -133,7 +136,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String shareLink = "https://www.pinkesh.site/projects/FinTrack";
+                String shareLink = "https://www.indusappstore.com/apps/finance/fintrack/com.sachin.fintrack?page=details&id=com.sachin.fintrack";
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT, "Hey, check out this amazing app: " + shareLink);
@@ -141,25 +144,57 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        binding.logout.setOnClickListener(v -> {
+        binding.genernal.setOnClickListener(v -> {
+            startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.aifintrack.xyz")));
+        });
+
+        binding.relContact.setOnClickListener(v -> {
+            Uri uri = Uri.parse("smsto:9304519076");
+            Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+            intent.putExtra("sms_body", "the SMS text");
+            startActivity(intent);
+        });
+
+        binding.relLogout.setOnClickListener(v -> {
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle("Logout")
                     .setMessage("Are you sure you want to logout?")
                     .setPositiveButton("Yes", (dialog, which) -> {
-                        auth.signOut();
-                        Intent intent = new Intent(getContext(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+
+                        FirebaseAuth.getInstance().signOut();
+
+                        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestIdToken(getString(R.string.default_web_client_id))
+                                .requestEmail()
+                                .build();
+
+                        GoogleSignInClient gsc = GoogleSignIn.getClient(requireContext(), gso);
+
+                        gsc.signOut().addOnCompleteListener(task -> {
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        });
+
                     })
-                    .setNegativeButton("No", (dialog, which) -> {
-                        dialog.dismiss();
-                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                     .show();
         });
 
 
+
         loadUserData();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        requireActivity().getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
     }
 
     private void checkPermissionAndOpenGallery() {
@@ -196,7 +231,7 @@ public class ProfileFragment extends Fragment {
 
                     Picasso.get()
                             .load(model.getProfile())
-                            .placeholder(R.drawable.friend_2)
+                            .placeholder(R.drawable.img)
                             .into(binding.profileImage);
 
 

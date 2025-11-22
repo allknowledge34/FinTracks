@@ -2,11 +2,22 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00D61355</color>
+    <color name="themeColor">#D61355</color>
+    <color name="themeLightColor">#ffe6e8</color>
+    <color name="lang_bg_color">#F3F4F8</color>
+    <color name="text_color">#000000</color>
     <color name="darkWhite">#CBCCCF</color>
     <color name="dWhite">#85A8BF</color>
     <color name="blue">#2D5CEB</color>
     <color name="orangeDark">#CC2115</color>
     <color name="orange">#F44336</color>
+    <color name="orangeMid">#fecdc0</color>
+    <color name="orangeLight">#fecdc0</color>
+    <color name="lightOrange">#feecec</color>
+    <color name="lightGrey">#eeeced</color>
+    <color name="lightblue">#6672ff</color>
+    <color name="grey">#d7d6d7</color>
     <color name="textColor">#353535</color>
     <color name="greenColor">#4CAF50</color>
     <color name="redColor">#F44336</color>

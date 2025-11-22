@@ -5,6 +5,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -18,9 +20,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
         setContentView(R.layout.activity_splash_screen);
 
-        setStatusBarColor();
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -29,22 +34,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Intent intent = new Intent();
-                        intent.setClass(SplashScreenActivity.this, LoginActivity.class);
+                        intent.setClass(SplashScreenActivity.this, OnboardingActivity.class);
                         startActivity(intent);
                         finish();
                     }
                 });
             }
-        },2000);
-    }
-    private void setStatusBarColor() {
-        Window window = getWindow();
-        int statusBarColor = ContextCompat.getColor(this, R.color.darkWhite);
-        window.setStatusBarColor(statusBarColor);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            View decorView = window.getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+        },500);
     }
 }

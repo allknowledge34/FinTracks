@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -150,18 +152,34 @@ public class OTPActivity extends AppCompatActivity {
 
                         String uid = auth.getCurrentUser().getUid();
 
-                        UserModel user = new UserModel(
-                                name, email, number, password,
-                                "https://firebasestorage.googleapis.com/v0/b/earning-b8942.firebasestorage.app/o/account.png?alt=media&token=0ef08dd9-6b13-4da2-a39f-500cff3cf4f0"
-                        );
+                        AuthCredential emailCredential =
+                                EmailAuthProvider.getCredential(email, password);
 
-                        firestore.collection("users")
-                                .document(uid)
-                                .set(user)
-                                .addOnSuccessListener(unused -> {
-                                    dialog.dismiss();
-                                    startActivity(new Intent(OTPActivity.this, MainActivity.class));
-                                    finish();
+                        auth.getCurrentUser().linkWithCredential(emailCredential)
+                                .addOnCompleteListener(linkTask -> {
+
+                                    if (linkTask.isSuccessful()) {
+
+                                        UserModel user = new UserModel(
+                                                name, email, number, password,
+                                                "https://firebasestorage.googleapis.com/v0/b/earning-b8942.firebasestorage.app/o/account.png?alt=media&token=0ef08dd9-6b13-4da2-a39f-500cff3cf4f0"
+                                        );
+
+                                        firestore.collection("users")
+                                                .document(uid)
+                                                .set(user)
+                                                .addOnSuccessListener(unused -> {
+                                                    dialog.dismiss();
+                                                    startActivity(new Intent(OTPActivity.this, MainActivity.class));
+                                                    finish();
+                                                });
+
+                                    } else {
+                                        dialog.dismiss();
+                                        Toast.makeText(OTPActivity.this,
+                                                "Signup Linking Failed: " + linkTask.getException().getMessage(),
+                                                Toast.LENGTH_LONG).show();
+                                    }
                                 });
 
                     } else {
@@ -170,4 +188,5 @@ public class OTPActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }

@@ -645,7 +645,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="2dp"
                     android:gravity="center"
-                    android:text="1.5"
+                    android:text="1.8"
                     android:textColor="#9F9F9F"
                     android:textSize="15sp">
 

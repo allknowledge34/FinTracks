@@ -3,30 +3,20 @@ package com.sachin.fintrack.views.activites;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.sachin.fintrack.R;
 import com.sachin.fintrack.databinding.ActivitySignUpBinding;
-import com.sachin.fintrack.models.UserModel;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +24,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     ActivitySignUpBinding binding;
     FirebaseAuth auth;
-    FirebaseFirestore firestore;
     ProgressDialog progressDialog;
     ImageView googleBtn;
     ImageView emailBtn;
@@ -42,10 +31,12 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
+
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -54,85 +45,69 @@ public class SignUpActivity extends AppCompatActivity {
         googleBtn = findViewById(R.id.google_btn);
         emailBtn = findViewById(R.id.email_btn);
 
-        firestore = FirebaseFirestore.getInstance();
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Creating Your Account");
         progressDialog.setMessage("Your Account Is Creating");
 
-        binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = binding.edtName.getText().toString();
-                String email = binding.edtEmail.getText().toString();
-                String number = binding.edtMobile.getText().toString();
-                String password = binding.edtPassword.getText().toString();
+        binding.btnSignUp.setOnClickListener(v -> doValidation());
 
-                if (name.isEmpty()){
-                    binding.edtName.setError("Enter Your Good Name");
-                } else if (email.isEmpty()) {
-                    binding.edtEmail.setError("Enter Your Valid Email");
-                }else if (number.isEmpty()) {
-                    binding.edtEmail.setError("Enter Your Valid Mobile Number");
-                }else if (password.isEmpty()) {
-                    binding.edtPassword.setError("Enter Strong Password");
-                }else {
+        binding.login.setOnClickListener(v -> {
+            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+            finish();
+        });
 
-                    progressDialog.show();
+        googleBtn.setOnClickListener(v -> {
+            Toast.makeText(this, "Click on Google button to login with Google", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+            finish();
+        });
+
+        emailBtn.setOnClickListener(v -> doValidation());
+    }
+
+    private void doValidation() {
+
+        String name = binding.edtName.getText().toString();
+        String email = binding.edtEmail.getText().toString();
+        String number = binding.edtMobile.getText().toString();
+        String password = binding.edtPassword.getText().toString();
+
+        if (name.isEmpty()) { binding.edtName.setError("Enter Your Good Name"); return; }
+        if (email.isEmpty()) { binding.edtEmail.setError("Enter Your Valid Email"); return; }
+        if (number.isEmpty()) { binding.edtMobile.setError("Enter Your Valid Mobile Number"); return; }
+        if (password.isEmpty()) { binding.edtPassword.setError("Enter Strong Password"); return; }
+
+        checkEmailAlreadyExists(name, email, number, password);
+    }
+
+    private void checkEmailAlreadyExists(String name, String email, String number, String password) {
+
+        progressDialog.show();
+
+        auth.fetchSignInMethodsForEmail(email)
+                .addOnCompleteListener(task -> {
+
+                    if (!task.isSuccessful()) {
+                        progressDialog.dismiss();
+                        Toast.makeText(this, "Error: " + task.getException(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    boolean exists = !task.getResult().getSignInMethods().isEmpty();
+
+                    if (exists) {
+                        progressDialog.dismiss();
+                        Toast.makeText(this,
+                                "This email is already registered. Please login.",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     sendOtpForVerification(name, email, number, password);
-                }
-            }
-        });
-
-        binding.googleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(SignUpActivity.this,
-                        "Click on Google button to login with Google",
-                        Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        binding.emailBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = binding.edtName.getText().toString();
-                String email = binding.edtEmail.getText().toString();
-                String number = binding.edtMobile.getText().toString();
-                String password = binding.edtPassword.getText().toString();
-
-                if (name.isEmpty()){
-                    binding.edtName.setError("Enter Your Good Name");
-                } else if (email.isEmpty()) {
-                    binding.edtEmail.setError("Enter Your Valid Email");
-                }else if (number.isEmpty()) {
-                    binding.edtEmail.setError("Enter Your Valid Mobile Number");
-                }else if (password.isEmpty()) {
-                    binding.edtPassword.setError("Enter Strong Password");
-                }else {
-
-                    progressDialog.show();
-                    sendOtpForVerification(name, email, number, password);
-                }
-            }
-        });
-
-        binding.login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+                });
     }
 
     private void sendOtpForVerification(String name, String email, String number, String password) {
-
-        progressDialog.show();
 
         String phoneNumber = "+91" + number;
 
@@ -160,7 +135,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
 
                                 progressDialog.dismiss();
-
                                 goToOtpScreen(name, email, number, password, verificationId, false, null);
                             }
                         })
@@ -173,6 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
                                String verificationId, boolean autoVerify, PhoneAuthCredential credential) {
 
         Intent intent = new Intent(SignUpActivity.this, OTPActivity.class);
+
         intent.putExtra("name", name);
         intent.putExtra("email", email);
         intent.putExtra("number", number);
@@ -183,7 +158,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (autoVerify && credential != null) {
             OTPActivity.autoCredential = credential;
         }
+
         startActivity(intent);
     }
-
 }

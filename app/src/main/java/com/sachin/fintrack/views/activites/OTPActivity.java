@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -96,6 +97,7 @@ public class OTPActivity extends AppCompatActivity {
         password = getIntent().getStringExtra("password");
         verificationId = getIntent().getStringExtra("verificationId");
 
+        if (number == null) number = "";
         binding.tvUserNumber.setText(number);
     }
 
@@ -144,48 +146,84 @@ public class OTPActivity extends AppCompatActivity {
     }
 
     private void verifyCredential(PhoneAuthCredential credential) {
+        if (!dialog.isShowing()) dialog.show();
 
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
 
-                    if (task.isSuccessful()) {
+                    if (!task.isSuccessful()) {
+                        dialog.dismiss();
+                        String m = task.getException() != null ? task.getException().getMessage() : "OTP verification failed";
+                        Toast.makeText(OTPActivity.this, "OTP Error: " + m, Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
-                        String uid = auth.getCurrentUser().getUid();
+                    if (auth.getCurrentUser() == null) {
+                        dialog.dismiss();
+                        Toast.makeText(OTPActivity.this, "Authentication error: user not found after sign-in", Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
-                        AuthCredential emailCredential =
-                                EmailAuthProvider.getCredential(email, password);
+                    final String uid = auth.getCurrentUser().getUid();
 
-                        auth.getCurrentUser().linkWithCredential(emailCredential)
-                                .addOnCompleteListener(linkTask -> {
+                    if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+                        saveUserToFirestoreAndContinue(uid, name, email, number, password);
+                        return;
+                    }
 
-                                    if (linkTask.isSuccessful()) {
+                    AuthCredential emailCredential = EmailAuthProvider.getCredential(email, password);
 
-                                        UserModel user = new UserModel(
-                                                name, email, number, password,
-                                                "https://firebasestorage.googleapis.com/v0/b/earning-b8942.firebasestorage.app/o/account.png?alt=media&token=0ef08dd9-6b13-4da2-a39f-500cff3cf4f0"
-                                        );
+                    auth.getCurrentUser().linkWithCredential(emailCredential)
+                            .addOnCompleteListener(linkTask -> {
 
-                                        firestore.collection("users")
-                                                .document(uid)
-                                                .set(user)
-                                                .addOnSuccessListener(unused -> {
-                                                    dialog.dismiss();
-                                                    startActivity(new Intent(OTPActivity.this, MainActivity.class));
-                                                    finish();
-                                                });
+                                if (linkTask.isSuccessful()) {
+                                    saveUserToFirestoreAndContinue(uid, name, email, number, password);
+                                } else {
+                                    dialog.dismiss();
 
-                                    } else {
-                                        dialog.dismiss();
+                                    Exception e = linkTask.getException();
+                                    String msg = e != null ? e.getMessage() : "Unknown linking error";
+
+                                    if (e instanceof FirebaseAuthUserCollisionException) {
                                         Toast.makeText(OTPActivity.this,
-                                                "Signup Linking Failed: " + linkTask.getException().getMessage(),
+                                                "This email is already registered with a different account. Please login with that email or use another email.",
+                                                Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(OTPActivity.this,
+                                                "Failed to link email: " + msg,
                                                 Toast.LENGTH_LONG).show();
                                     }
-                                });
+                                }
+                            });
+                });
+    }
 
-                    } else {
-                        dialog.dismiss();
-                        Toast.makeText(this, "Invalid OTP", Toast.LENGTH_SHORT).show();
-                    }
+    private void saveUserToFirestoreAndContinue(String uid, String name, String email, String number, String password) {
+
+        if (name == null) name = "";
+        if (email == null) email = "";
+        if (number == null) number = "";
+        if (password == null) password = "";
+
+        UserModel user = new UserModel(
+                name,
+                email,
+                number,
+                password,
+                "https://firebasestorage.googleapis.com/v0/b/earning-b8942.firebasestorage.app/o/account.png?alt=media&token=0ef08dd9-6b13-4da2-a39f-500cff3cf4f0"
+        );
+
+        firestore.collection("users")
+                .document(uid)
+                .set(user)
+                .addOnSuccessListener(unused -> {
+                    if (dialog.isShowing()) dialog.dismiss();
+                    startActivity(new Intent(OTPActivity.this, MainActivity.class));
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    if (dialog.isShowing()) dialog.dismiss();
+                    Toast.makeText(OTPActivity.this, "Failed to save user data: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 

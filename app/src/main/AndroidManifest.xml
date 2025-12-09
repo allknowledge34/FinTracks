@@ -17,10 +17,10 @@
         android:theme="@style/Theme.FinTrack"
         tools:targetApi="31">
         <activity
-            android:name=".views.activites.OnboardingActivity"
+            android:name=".views.activites.OTPActivity"
             android:exported="false" />
         <activity
-            android:name=".views.activites.OTPActivity"
+            android:name=".views.activites.OnboardingActivity"
             android:exported="false" />
         <activity
             android:name=".views.activites.LanguageActivity"

@@ -12,8 +12,8 @@ android {
         applicationId = "com.sachin.fintrack"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.5"
+        versionCode = 8
+        versionName = "1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
